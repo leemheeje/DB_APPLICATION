@@ -1,0 +1,16 @@
+@charset "UTF-8";
+$COLORSET_PRIMARY: #007bff;
+$COLORSET_SECONDARY: #6c757d;
+$COLORSET_SUCCESS: #28a745;
+$COLORSET_DANGER: #dc3545;
+$COLORSET_WARNING: #ffc107;
+$COLORSET_INFO: #17a2b8;
+$COLORSET_LIGHT: #f8f9fa;
+$COLORSET_DARK: #343a40;
+$COLORSET_WHITE: #fff;
+
+
+@function test($st){
+    $str : $st+1;
+    @return $str;
+}
