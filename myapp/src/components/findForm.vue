@@ -90,6 +90,7 @@
 		    @change="pickerDialog=false"
 		    v-model="datePicker"
 		    :full-width="true"
+			locale="ko"
 		></v-date-picker>
 	</v-dialog>
 </v-layout>

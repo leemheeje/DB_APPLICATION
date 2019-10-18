@@ -148,7 +148,7 @@
 					>
 						<v-icon>close</v-icon>
 					</v-btn>
-					<v-toolbar-title>Settings</v-toolbar-title>
+					<v-toolbar-title style="padding-left: 0;">등록하기</v-toolbar-title>
 					<v-spacer></v-spacer>
 					<v-toolbar-items>
 						<v-btn
