@@ -71,9 +71,6 @@ rounter.beforeEach((to, from, next) => {
 	} else {
 		$('body').removeClass('login');
 	}
-	// if(to.name !== 'Login' && to.name !== 'MemeberJoin' && !this.$store.state.user_info) {
-	//   to.name = 'Login';
-	// }
 	next();
 });
 export default rounter;

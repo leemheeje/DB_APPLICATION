@@ -38,7 +38,7 @@ Vue.component('Modal', Modal)
 Vue.component('Items', Items)
 Vue.use(Vuex);
 Vue.use(VueSession);
-const DB_DOMAIN = process.env.NODE_ENV === 'development' ? '//localhost:1337' : '//localhost:1337' //'../';
+const DB_DOMAIN = process.env.NODE_ENV === 'development' ? '//localhost:1337' : '//61.78.72.233:1337' //'../';
 const ROOT_PATH = process.env.NODE_ENV === 'development' ? '/' : '/study/vue' //'../';
 const store = new Vuex.Store({
 	state: {
@@ -67,6 +67,9 @@ Vue.prototype.$DB_PATH = {
 	USER_UPLOAD_FIND: DB_DOMAIN + '/upload/files/', //get
 	USER_UPLOAD_COUNT: DB_DOMAIN + '/upload/files/count', //get
 };
+Vue.filter('isLocalPath', s => {
+	return s.indexOf('localhost') != -1 && process.env.NODE_ENV != 'development' ? s.replace('localhost', '61.78.72.233') : s;
+});
 new Vue({
 	el: '#app',
 	router,

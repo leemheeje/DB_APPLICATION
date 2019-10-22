@@ -3,7 +3,7 @@
 	<div class="lrow">
 		<div class="user_t">
 			<span class="thumb">
-				<img :src="user_img" alt="" v-if="user_img"/>
+				<img :src="user_img  | isLocalPath" alt="" v-if="user_img"/>
 				<img src="http://test.eos-red.com/mobile/images/common/cbtTopBanner.png?v=1" alt="" v-else/>
 			</span>
 				<div class="user_name">{{user_name}}</div>
@@ -32,7 +32,6 @@ export default {
 	},
 	computed: {
 		userSkills() {
-			console.log(this.user_skills);
 			return this.user_skills.length && this.user_skills.indexOf(',') ? this.user_skills.split(',') : false;
 		}
 	},

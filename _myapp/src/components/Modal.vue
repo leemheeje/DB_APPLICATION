@@ -1,5 +1,8 @@
 <template>
-<div class="modal">
+<div
+		class="modal"
+		@click.self="fnModalClose"
+>
 	<div
 			class="itemDetailView"
 			v-if="usersInfo&&usersItems"
@@ -9,7 +12,7 @@
 				<div class="ivLIn">
 					<span class="thumb">
 						<img
-								:src="usersInfo.user_img"
+								:src="usersInfo.user_img | isLocalPath"
 								alt=""
 								v-if="usersInfo.user_img"
 						/>
@@ -64,10 +67,10 @@
 							<span class="ic"> 조회수: </span>
 							<span class="t">{{usersItems.count_view}}</span>
 						</span>
-						<!-- <span class="tp tp1">
+						<span class="tp tp1">
 							<span class="ic"> 댓글수: </span>
 							<span class="t">{{usersItems.count_comments}}</span>
-						</span> -->
+						</span>
 						<span class="tp tp0">
 							<span class="ic"> 좋아요: </span>
 							<span class="t">{{usersItems.count_favorite}}</span>
@@ -78,15 +81,15 @@
 		</div>
 		<div class="idvMid">
 			<span class="thumb"><img
-						:src="usersItems.img.url"
+						:src="usersItems.img.url | isLocalPath"
 						alt=""
 				/></span>
 		</div>
 		<div class="idvBottom">
 			<div class="idvComments">
-				<!-- <div class="idvCTop">
+				<div class="idvCTop">
 					<span class="lng">{{usersItems.count_comments}}개의 댓글이 있습니다.</span>
-				</div> -->
+				</div>
 				<ul class="lst">
 					<li
 							class="tp"
@@ -95,12 +98,12 @@
 						<div class="in">
 							<span class="thumb">
 								<img
-										:src="key.img.url"
+										:src="key.img.url | isLocalPath"
 										alt=""
 										v-if="key.img.url"
 								/>
 								<img
-										:src="$DB_DOMAIN+key.img.url"
+										:src="$DB_DOMAIN+key.img.url  | isLocalPath"
 										alt=""
 										v-else
 								/>
@@ -114,7 +117,7 @@
 						</div>
 					</li>
 				</ul>
-				<!-- <div class="idvCField">
+				<div class="idvCField">
 					<div
 							class="bl"
 							v-if="!$store.state.USER_ID"
@@ -143,7 +146,7 @@
 								@jsClick="fnApplyComments"
 						>댓글등록</ahref>
 					</div>
-				</div> -->
+				</div>
 			</div>
 		</div>
 	</div>
@@ -193,12 +196,6 @@ export default {
 					this.usersItems['count_view'] = 1;
 				}
 			}
-			// this.$http.get(this.$DB_PATH['FIND_ON'] + this.usersInfo.id).then(res => {
-			// 	res.data.user_items[this.usersItemsIndex] = this.usersItems;
-			// 	this.$http.put(this.$DB_PATH['USER_UPDATE'] + this.usersInfo.id, {
-			// 		"user_items": res.data.user_items
-			// 	}).then(res => {}).catch(e => {});
-			// }).catch(e => {});
 			this.$http.get(this.$DB_PATH['FIND_ON'] + userInfoId).then(res => {
 				for (var i = 0; i < res.data.user_items.length; i++) {
 					if (res.data.user_items[i].img.id == this.usersItems.img.id) {
@@ -215,6 +212,7 @@ export default {
 			$('.modal').hide();
 		},
 		fnApplyComments() {
+			var userInfoId = this.usersInfo._id || this.usersInfo.id;
 			var cmt = this.usersItems.comments;
 			if (!cmt || !Array.isArray(cmt)) {
 				cmt = [];
@@ -230,26 +228,28 @@ export default {
 					name: res.data.user_name,
 				});
 				this.usersItems.count_comments = cmt.length;
-				let c = 0;
-				for (var i = 0; i < this.usersItems.length; i++) {
-					if (this.usersItems[i].img._id == this.usersItemsId) {
-						c = i;
-						break;
+				this.$http.get(this.$DB_PATH['FIND_ON'] + userInfoId).then(res => {
+					for (var i = 0; i < res.data.user_items.length; i++) {
+						if (res.data.user_items[i].img.id == this.usersItems.img.id) {
+							res.data.user_items[i] = this.usersItems;
+							this.$http.put(this.$DB_PATH['USER_UPDATE'] + userInfoId, {
+								"user_items": res.data.user_items
+							}).then(res => {}).catch(e => {});
+							break;
+						}
 					}
-				}
-				console.log(this.usersItems);
-				//this.usersItems[c].count_comments = cmt.length;
-				this.usersItems.comments[c] = cmt;
-				// this.$http.put(this.$DB_PATH['USER_UPDATE'] + this.usersInfo.id, {
-				// 	//"user_items": res.data.user_items
-				// 	"user_items": [this.usersItems]
-				// }).then(res => {});
+				}).catch(e => {});
 				this.loc_comments_title = '';
 				this.loc_comments_msg = '';
-			}).catch(e => {
-				console.log(e);
-			});
+			}).catch(e => {});
 		},
+	},
+	mounted() {
+		window.addEventListener('keyup', e => {
+			if (e.keyCode == 27) {
+				this.fnModalClose();
+			}
+		});
 	}
 }
 </script>

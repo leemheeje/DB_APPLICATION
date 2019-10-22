@@ -8,12 +8,12 @@
 	>
 		<span class="img">
 			<img
-					:src="usersItems.img.url"
+					:src="usersItems.img.url | isLocalPath"
 					alt=""
 					v-if="usersItems.img"
 			/>
 			<img
-					:src="$PROFILE_NULL_IMG"
+					:src="$PROFILE_NULL_IMG  | isLocalPath"
 					alt=""
 					v-else
 			/>
@@ -30,12 +30,12 @@
 					class="init thumb"
 			>
 				<img
-						:src="usersInfo.user_img"
+						:src="usersInfo.user_img  | isLocalPath"
 						alt=""
 						v-if="usersInfo.user_img"
 				/>
 				<img
-						:src="$PROFILE_NULL_IMG"
+						:src="$PROFILE_NULL_IMG  | isLocalPath"
 						alt=""
 						v-else
 				/>
@@ -67,7 +67,7 @@
 					</span>
 					<span class="t">{{format(usersItems.count_view)}}</span>
 				</ahref>
-				<!-- <ahref
+				<ahref
 						cssClass="init tp tooltip tp1"
 						original="true"
 						onlyTooltip="true"
@@ -80,7 +80,7 @@
 						></fontIcon>
 					</span>
 					<span class="t">{{format(usersItems.count_comments)}}</span>
-				</ahref> -->
+				</ahref>
 				<ahref
 						cssClass="init tp tooltip tp0"
 						original="true"
@@ -109,14 +109,20 @@
 						color="#fff"
 				></fontIcon>
 			</span>
-			<span class="t" style="margin-right: 10px;">{{format(usersItems.count_view)}}</span>
+			<span
+					class="t"
+					style="margin-right: 10px;"
+			>{{format(usersItems.count_view)}}</span>
 			<span class="ic">
 				<fontIcon
 						icon="comment"
 						color="#fff"
 				></fontIcon>
 			</span>
-			<span class="t" style="margin-right: 10px;">{{format(usersItems.count_comments)}}</span>
+			<span
+					class="t"
+					style="margin-right: 10px;"
+			>{{format(usersItems.count_comments)}}</span>
 			<span class="ic">
 				<fontIcon
 						icon="heart"
@@ -130,7 +136,7 @@
 </template>
 <script>
 export default {
-	props: ['usersInfo', 'usersItems', 'usersItemsIndex', 'isUserView','usersItemsId'],
+	props: ['usersInfo', 'usersItems', 'usersItemsIndex', 'isUserView', 'usersItemsId'],
 	data() {
 		return {
 			users: null,
@@ -179,7 +185,6 @@ export default {
 			this.$store.state.USER_ITEMS_OBJECT = this.usersItems;
 			this.$store.state.USER_ITEMS_INDEX = this.usersItemsIndex;
 			this.$store.state.USER_ITEMS_ID = this.usersItemsId;
-			console.log(this.usersItemsId);
 			$('.modal').show();
 		},
 		fnAddCount(nm) {
